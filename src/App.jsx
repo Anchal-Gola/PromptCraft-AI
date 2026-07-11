@@ -16,7 +16,7 @@ function App() {
 
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-cyan-500/10 blur-[160px]" />
 
-      <HistorySidebar />
+      <HistorySidebar setImage={setImage} />
 
       <div className="relative z-10 ml-80">
         <Navbar />

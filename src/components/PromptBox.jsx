@@ -5,6 +5,9 @@ import { generateImage } from "../services/imageService";
 
 function PromptBox({ setImage, setLoading }) {
   const [prompt, setPrompt] = useState("");
+  const [style, setStyle] = useState("Realistic");
+  const [aspectRatio, setAspectRatio] = useState("1:1");
+  const [model, setModel] = useState("FLUX Schnell");
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -15,7 +18,12 @@ function PromptBox({ setImage, setLoading }) {
     try {
       setLoading(true);
 
-      const data = await generateImage(prompt);
+      const data = await generateImage(
+        prompt,
+        style,
+        aspectRatio,
+        model
+      );
 
       setImage(`data:image/png;base64,${data.image}`);
 
@@ -47,7 +55,11 @@ function PromptBox({ setImage, setLoading }) {
 
         <div className="mt-6 flex flex-wrap gap-4">
 
-          <select className="bg-zinc-800 px-4 py-3 rounded-lg outline-none">
+          <select
+            value={style}
+            onChange={(e) => setStyle(e.target.value)}
+            className="bg-zinc-800 px-4 py-3 rounded-lg outline-none"
+          >
             <option>Realistic</option>
             <option>Anime</option>
             <option>3D</option>
@@ -55,14 +67,22 @@ function PromptBox({ setImage, setLoading }) {
             <option>Fantasy</option>
           </select>
 
-          <select className="bg-zinc-800 px-4 py-3 rounded-lg outline-none">
+          <select
+            value={aspectRatio}
+            onChange={(e) => setAspectRatio(e.target.value)}
+            className="bg-zinc-800 px-4 py-3 rounded-lg outline-none"
+          >
             <option>1:1</option>
             <option>16:9</option>
             <option>9:16</option>
             <option>4:3</option>
           </select>
 
-          <select className="bg-zinc-800 px-4 py-3 rounded-lg outline-none">
+          <select
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+            className="bg-zinc-800 px-4 py-3 rounded-lg outline-none"
+          >
             <option>FLUX Schnell</option>
             <option>Stable Diffusion XL</option>
           </select>
