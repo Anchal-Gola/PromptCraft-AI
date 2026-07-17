@@ -3,8 +3,13 @@ import { FaMagic, FaImage } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { generateImage } from "../services/imageService";
 
-function PromptBox({ setImage, setLoading }) {
-  const [prompt, setPrompt] = useState("");
+function PromptBox({
+  setImage,
+  setPrompt,
+  setLoading,
+  setRefreshHistory,
+}) {
+  const [prompt, setPromptInput] = useState("");
   const [style, setStyle] = useState("Realistic");
   const [aspectRatio, setAspectRatio] = useState("1:1");
   const [model, setModel] = useState("FLUX Schnell");
@@ -26,6 +31,10 @@ function PromptBox({ setImage, setLoading }) {
       );
 
       setImage(`data:image/png;base64,${data.image}`);
+      setPrompt(prompt);
+      setTimeout(() => {
+      setRefreshHistory((prev) => !prev);
+       }, 1000);
 
       toast.success("Image generated successfully!");
     } catch (error) {
@@ -48,7 +57,7 @@ function PromptBox({ setImage, setLoading }) {
 
         <textarea
           value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
+          onChange={(e) => setPromptInput(e.target.value)}
           placeholder="A futuristic cyberpunk city at sunset with flying cars..."
           className="w-full h-40 bg-transparent outline-none resize-none text-white text-lg placeholder:text-zinc-500"
         />
@@ -84,7 +93,6 @@ function PromptBox({ setImage, setLoading }) {
             className="bg-zinc-800 px-4 py-3 rounded-lg outline-none"
           >
             <option>FLUX Schnell</option>
-            <option>Stable Diffusion XL</option>
           </select>
 
           <button

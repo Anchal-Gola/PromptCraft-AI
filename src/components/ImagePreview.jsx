@@ -1,6 +1,13 @@
 import { FaDownload, FaRedo } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { generateImage } from "../services/imageService";
 
-function ImagePreview({ image }) {
+function ImagePreview({
+  image,
+  prompt,
+  setImage,
+  setLoading,
+}) {
   const handleDownload = () => {
     if (!image) return;
 
@@ -8,6 +15,27 @@ function ImagePreview({ image }) {
     link.href = image;
     link.download = "promptcraft-ai-image.png";
     link.click();
+  };
+
+  const handleRegenerate = async () => {
+    if (!prompt) {
+      toast.error("No prompt available.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const data = await generateImage(prompt);
+
+      setImage(`data:image/png;base64,${data.image}`);
+
+      toast.success("Image regenerated!");
+    } catch (error) {
+      toast.error("Failed to regenerate image.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,7 +68,10 @@ function ImagePreview({ image }) {
 
         <div className="flex justify-end gap-4 mt-6">
 
-          <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition">
+          <button
+            onClick={handleRegenerate}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition"
+          >
             <FaRedo />
             Regenerate
           </button>
