@@ -1,16 +1,80 @@
-# React + Vite
+# 🎨 PromptCraft-AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![MERN Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node.js%20%7C%20Express-blueviolet?style=for-the-badge&logo=react)
 
-Currently, two official plugins are available:
+An AI-powered web application that transforms textual prompts into high-quality generated images using custom prompt engineering and AI generation APIs.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🔗 Live Demo & Links
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Live Application:** [Deploy on Vercel / Render](https://github.com/Anchal-Gola/PromptCraft-AI)
+- **GitHub Repository:** [https://github.com/Anchal-Gola/PromptCraft-AI](https://github.com/Anchal-Gola/PromptCraft-AI)
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## ✨ Key Features
+
+- **Text-to-Image Generation:** Convert descriptive natural language prompts into visual images instantly.
+- **AI Model Integration:** Integrates API endpoints (Pollinations.ai / Hugging Face Inference API) for fast image rendering.
+- **Custom Prompt Enhancer:** Assists users in refining input prompts to achieve optimal visual output quality.
+- **Download & Save:** Easily save generated images directly to local storage.
+- **Modern Responsive UI:** Clean dashboard interface built with React and Vite for fast performance.
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework:** React.js (Vite)
+- **Styling:** CSS3
+- **HTTP Client:** Axios / Fetch API
+
+### Backend
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **API Integration:** Pollinations AI API / Hugging Face API
+
+---
+
+## 📐 System Architecture
+┌──────────────────┐        HTTP Requests        ┌──────────────────┐
+│   React Client   │ ──────────────────────────> │  Express Server  │
+│  (Vite Frontend) │ <────────────────────────── │   (Node.js API)  │
+└──────────────────┘       Generated Image       └────────┬─────────┘
+│
+│ External API
+▼
+┌──────────────────┐
+│  Pollinations /  │
+│ Hugging Face API │
+└──────────────────┘
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the `backend` directory and add the following keys:
+
+```env
+PORT=5000
+CLIENT_URL=http://localhost:5173
+
+🚀 Local Setup & Development
+Prerequisites
+Node.js installed (v18+)
+
+Step 1: Clone the Repository
+git clone [https://github.com/Anchal-Gola/PromptCraft-AI.git](https://github.com/Anchal-Gola/PromptCraft-AI.git)
+cd PromptCraft-AI
+
+Step 2: Backend Setup
+cd backend
+npm install
+npm start
+
+Step 3: Frontend Setup
+Open a new terminal window in the root directory:
+npm install
+npm run dev

@@ -6,11 +6,13 @@ import ImagePreview from "./components/ImagePreview";
 import HistorySidebar from "./components/HistorySidebar";
 import LoadingSkeleton from "./components/LoadingSkeleton";
 import { getHistory } from "./services/historyService";
+import ProgressBar from "./components/ProgressBar";
 
 function App() {
   const [image, setImage] = useState("");
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   // 👇 New state
   const [refreshHistory, setRefreshHistory] = useState(false);
@@ -19,8 +21,13 @@ function App() {
 
   const fetchHistory = async () => {
   try {
+    console.log("Fetching history...");
+
     const data = await getHistory();
-    setHistory(data.images);
+
+    console.log("History received:", data.images.length);
+
+    setHistory([...data.images]);
   } catch (error) {
     console.log(error);
   }
@@ -48,23 +55,26 @@ function App() {
 
         <Hero />
 
-        <PromptBox
-          setImage={setImage}
-          setPrompt={setPrompt}
-          setLoading={setLoading}
-          setRefreshHistory={setRefreshHistory}
-        />
+       <PromptBox
+  setImage={setImage}
+  setPrompt={setPrompt}
+  setLoading={setLoading}
+  setRefreshHistory={setRefreshHistory}
+  setProgress={setProgress}
+     />
 
-        {loading ? (
-          <LoadingSkeleton />
-        ) : (
-          <ImagePreview
-            image={image}
-            prompt={prompt}
-            setImage={setImage}
-            setLoading={setLoading}
-          />
-        )}
+        {loading && <ProgressBar progress={progress} />}
+
+{loading ? (
+  <LoadingSkeleton />
+) : (
+  <ImagePreview
+    image={image}
+    prompt={prompt}
+    setImage={setImage}
+    setLoading={setLoading}
+  />
+)}
       </div>
     </div>
   );

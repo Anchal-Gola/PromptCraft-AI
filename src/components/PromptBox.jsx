@@ -8,6 +8,7 @@ function PromptBox({
   setPrompt,
   setLoading,
   setRefreshHistory,
+  setProgress,
 }) {
   const [prompt, setPromptInput] = useState("");
   const [style, setStyle] = useState("Realistic");
@@ -15,34 +16,57 @@ function PromptBox({
   const [model, setModel] = useState("FLUX Schnell");
 
   const handleGenerate = async () => {
-    if (!prompt.trim()) {
-      toast.error("Please enter a prompt.");
-      return;
-    }
+  if (!prompt.trim()) {
+    toast.error("Please enter a prompt.");
+    return;
+  }
 
-    try {
-      setLoading(true);
+  let value = 0;
 
-      const data = await generateImage(
-        prompt,
-        style,
-        aspectRatio,
-        model
-      );
+  try {
+    setLoading(true);
+    setProgress(0);
 
-      setImage(`data:image/png;base64,${data.image}`);
-      setPrompt(prompt);
-      setTimeout(() => {
-      setRefreshHistory((prev) => !prev);
-       }, 1000);
+    const interval = setInterval(() => {
+      value += Math.floor(Math.random() * 10) + 5;
 
-      toast.success("Image generated successfully!");
-    } catch (error) {
-      toast.error("Failed to generate image.");
-    } finally {
+      if (value >= 90) {
+        value = 90;
+        clearInterval(interval);
+      }
+
+      setProgress(value);
+    }, 400);
+
+    const data = await generateImage(
+      prompt,
+      style,
+      aspectRatio,
+      model
+    );
+
+    clearInterval(interval);
+
+    setProgress(100);
+
+    setImage(`data:image/png;base64,${data.image}`);
+    setPrompt(prompt);
+
+    setRefreshHistory((prev) => !prev);
+
+    toast.success("Image generated successfully!");
+
+    setTimeout(() => {
       setLoading(false);
-    }
-  };
+      setProgress(0);
+    }, 500);
+
+  } catch (error) {
+    setLoading(false);
+    setProgress(0);
+    toast.error("Failed to generate image.");
+  }
+};
 
   return (
     <section className="max-w-5xl mx-auto mt-16 px-6">
